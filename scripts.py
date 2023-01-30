@@ -62,7 +62,7 @@ def get_subject(subject_name, schoolkid):
         return choice(Subject.objects.filter(year_of_study=schoolkid.year_of_study))
 
 
-def fix_marks(schoolkid_name="Фролов Иван"):
+def fix_marks(schoolkid_name):
     from datacenter.models import Mark
     schoolkid = get_schoolkid(schoolkid_name)
     if not schoolkid:
@@ -73,7 +73,7 @@ def fix_marks(schoolkid_name="Фролов Иван"):
         mark.save()
 
 
-def remove_chastisements(schoolkid_name="Фролов Иван"):
+def remove_chastisements(schoolkid_name):
     from datacenter.models import Chastisement
     schoolkid = get_schoolkid(schoolkid_name)
     if not schoolkid:
@@ -81,7 +81,7 @@ def remove_chastisements(schoolkid_name="Фролов Иван"):
     Chastisement.objects.filter(schoolkid=schoolkid).delete()
 
 
-def create_commendation(schoolkid_name="Фролов Иван", subject_name=None):
+def create_commendation(schoolkid_name, subject_name=None):
     from datacenter.models import Commendation, Lesson
     from random import choice
     schoolkid = get_schoolkid(schoolkid_name)
