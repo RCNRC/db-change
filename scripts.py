@@ -85,12 +85,11 @@ def create_commendation(schoolkid_name, subject_name=None):
     subject = get_subject(subject_name, schoolkid)
     if not subject:
         return
-    schoolkid_lessons = Lesson.objects.filter(
+    random_lesson = Lesson.objects.filter(
         year_of_study=schoolkid.year_of_study,
         group_letter=schoolkid.group_letter,
         subject=subject
-    )
-    random_lesson = choice(schoolkid_lessons)
+    ).order_by('?').first()
     commendation_text = choice(TOP_COMMENDATIONS)
     Commendation.objects.create(
         text=commendation_text,
@@ -99,4 +98,3 @@ def create_commendation(schoolkid_name, subject_name=None):
         subject=random_lesson.subject,
         teacher=random_lesson.teacher
     )
-
