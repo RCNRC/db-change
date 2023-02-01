@@ -46,7 +46,6 @@ def get_schoolkid(schoolkid_name):
 
 def get_subject(subject_name, schoolkid):
     from datacenter.models import Subject
-    from random import choice
     if subject_name:
         try:
             return Subject.objects.get(title=subject_name, year_of_study=schoolkid.year_of_study)
@@ -56,8 +55,7 @@ def get_subject(subject_name, schoolkid):
         except Subject.DoesNotExist:
             print(f"Предмет с названием: {subject_name} не найден.")
             return
-    else:
-        return choice(Subject.objects.filter(year_of_study=schoolkid.year_of_study))
+    return Subject.objects.filter(year_of_study=schoolkid.year_of_study).order_by('?').first()
 
 
 def fix_marks(schoolkid_name):
