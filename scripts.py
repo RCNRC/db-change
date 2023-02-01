@@ -34,28 +34,26 @@ TOP_COMMENDATIONS = [
 
 def get_schoolkid(schoolkid_name):
     from datacenter.models import Schoolkid
-    from django.core.exceptions import MultipleObjectsReturned, ObjectDoesNotExist
     try:
         return Schoolkid.objects.get(full_name__contains=schoolkid_name)
-    except MultipleObjectsReturned:
+    except Schoolkid.MultipleObjectsReturned:
         print(f"Слишком много совпадений по имени: {schoolkid_name}, уточните запрос.")
         return
-    except ObjectDoesNotExist:
+    except Schoolkid.DoesNotExist:
         print(f"Пользователь с именем: {schoolkid_name} не найден.")
         return
 
 
 def get_subject(subject_name, schoolkid):
     from datacenter.models import Subject
-    from django.core.exceptions import MultipleObjectsReturned, ObjectDoesNotExist
     from random import choice
     if subject_name:
         try:
             return Subject.objects.get(title=subject_name, year_of_study=schoolkid.year_of_study)
-        except MultipleObjectsReturned:
+        except Subject.MultipleObjectsReturned:
             print(f"Слишком много совпадений с предметом: {subject_name}, уточните запрос.")
             return
-        except ObjectDoesNotExist:
+        except Subject.DoesNotExist:
             print(f"Предмет с названием: {subject_name} не найден.")
             return
     else:
@@ -67,8 +65,8 @@ def fix_marks(schoolkid_name):
     schoolkid = get_schoolkid(schoolkid_name)
     if not schoolkid:
         return
-    frolov_bad_marks = Mark.objects.filter(schoolkid=schoolkid, points__lt=4)
-    for mark in frolov_bad_marks:
+    schoolkid_bad_marks = Mark.objects.filter(schoolkid=schoolkid, points__lt=4)
+    for mark in schoolkid_bad_marks:
         mark.points = 5
         mark.save()
 
